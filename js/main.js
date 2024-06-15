@@ -13,12 +13,12 @@ window.onload = function()
 	if (!tizen.preference.exists("gpsUpdateFrequency")) { tizen.preference.setValue("gpsUpdateFrequency", 10); }
 	if (!tizen.preference.exists("mqttPort")) { tizen.preference.setValue("mqttPort", 8883); }
 	if (!tizen.preference.exists("mqttDeviceID")) { tizen.preference.setValue("mqttDeviceID", "watch"); }
-	if (!tizen.preference.exists("mapLastLatitude")) { tizen.preference.setValue("mapLastLatitude", "-35.30826"); }
-	if (!tizen.preference.exists("mapLastLongitude")) { tizen.preference.setValue("mapLastLongitude", "149.12447"); }
+	if (!tizen.preference.exists("mapLastLatitude")) { tizen.preference.setValue("mapLastLatitude", -35.30826); }
+	if (!tizen.preference.exists("mapLastLongitude")) { tizen.preference.setValue("mapLastLongitude", 149.12447); }
 
 	// Set default until the first update
 	var map = new L.Map("map", {
-		center: new L.LatLng(parseFloat(tizen.preference.getValue("mapLastLatitude")), parseFloat(tizen.preference.getValue("mapLastLongitude"))),
+		center: new L.LatLng(tizen.preference.getValue("mapLastLatitude"), tizen.preference.getValue("mapLastLongitude")),
 		zoom: 14,
 		layers: [opentopo]
 	});
@@ -228,7 +228,7 @@ window.onload = function()
     				if (tizen.preference.getValue("mqttEnabled"))
     				{
     					try {
-							mqttClient.connect(mqttConnectOptions);
+							// mqttClient.connect(mqttConnectOptions);
     					}
     					catch(e) {
     						msg(e.message);
@@ -551,7 +551,7 @@ window.onload = function()
 		msg(responseObject.errorMessage);
 		if (responseObject.errorCode !== 0) {
 			try {
-				mqttClient.connect(mqttConnectOptions);
+				// mqttClient.connect(mqttConnectOptions);
 			}
 			catch(e) {
 				msg(e.message);
@@ -584,8 +584,8 @@ window.onload = function()
 				
 				// store last map position
 		    	var mapCenter = map.getCenter();
-		    	tizen.preference.setValue("mapLastLatitude",mapCenter.lat+"");
-		    	tizen.preference.setValue("mapLastLongitude",mapCenter.lng+"");
+		    	tizen.preference.setValue("mapLastLatitude",mapCenter.lat);
+		    	tizen.preference.setValue("mapLastLongitude",mapCenter.lng);
 		    	
     			tizen.application.getCurrentApplication().exit();
     		}
